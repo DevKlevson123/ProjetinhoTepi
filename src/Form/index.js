@@ -12,13 +12,16 @@ export default function Form(props){
           <TextInput placeholder='Nome Atividade' style={styles.Input}></TextInput>
           <Text style={styles.Text}>descrição da Atividade</Text>
           <TextInput placeholder='descrição Atividade' style={styles.Input}></TextInput>
-          <Text style={styles.Text}>Satifação</Text>
+          <Text style={styles.Text}>Satifação {valorSatisfacao}</Text>
           <Slider
             minimumValue={0}
             maximumValue={10}
-            value={0}
-            onValueChange= {(valor) => setvalorSatisfacao(valor)}
-            minimumTrackTintColor
+            value={valorSatisfacao}
+            onValueChange= {(valor) => setvalorSatisfacao(valor.toFixed(0))}
+            minimumTrackTintColor= "#008000"
+            maximumTrackTintColor= "#ff0000"
+            thumbTintColor={valorSatisfacao>=6? "#008000": "#ff0000"}
+            style={styles.Slider}
           ></Slider>
 
           <TouchableOpacity
@@ -60,5 +63,10 @@ const styles = StyleSheet.create({
       marginLeft: 12,
       borderRadius: 5,
       borderColor: '#000'
+    },
+    Slider: {
+
+      alignItems: "flex-start",
+      width: 200,
     }
 });
