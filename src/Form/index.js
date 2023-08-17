@@ -4,15 +4,21 @@ import Slider from '@react-native-community/slider';
 import { Ionicons } from 'react-native-vector-icons';
 
 export default function Form(props){
-    const[valorSatisfacao, setvalorSatisfacao] = useState(0)
+    const[valorSatisfacao, setvalorSatisfacao] = useState()
+    const[descricaoAtividade, setdescriçãoAtvidade] = useState('')
+
     return(
       <View style={styles.container}>
         <View style={styles.Modal}>
           <Text style={styles.Text}>Nome Atividade</Text>
           <TextInput placeholder='Nome Atividade' style={styles.Input}></TextInput>
-          <Text style={styles.Text}>descrição da Atividade</Text>
-          <TextInput placeholder='descrição Atividade' style={styles.Input}></TextInput>
-          <Text style={styles.Text}>Satifação {valorSatisfacao}</Text>
+          <Text style={styles.Text}>descrição da Atividade </Text>
+          <TextInput 
+          placeholder='descrição Atividade' 
+          style={styles.Input}
+          onChangeText={(texto) => setdescriçãoAtvidade(texto)}
+          ></TextInput>
+          <Text style={styles.Text}>Satifação (des)</Text>
           <Slider
             minimumValue={0}
             maximumValue={10}
