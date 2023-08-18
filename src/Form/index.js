@@ -2,9 +2,10 @@ import React, { useState }  from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Ionicons } from 'react-native-vector-icons';
+import { Picker } from '@react-native-picker/picker';
 
 export default function Form(props){
-    const[valorSatisfacao, setvalorSatisfacao] = useState()
+    const[Satisfacao, setSatisfacao] = useState('')
     const[descricaoAtividade, setdescriçãoAtvidade] = useState('')
 
     return(
@@ -18,17 +19,17 @@ export default function Form(props){
           style={styles.Input}
           onChangeText={(texto) => setdescriçãoAtvidade(texto)}
           ></TextInput>
-          <Text style={styles.Text}>Satifação (des)</Text>
-          <Slider
-            minimumValue={0}
-            maximumValue={10}
-            value={valorSatisfacao}
-            onValueChange= {(valor) => setvalorSatisfacao(valor.toFixed(0))}
-            minimumTrackTintColor= "#008000"
-            maximumTrackTintColor= "#ff0000"
-            thumbTintColor={valorSatisfacao>=6? "#008000": "#ff0000"}
-            style={styles.Slider}
-          ></Slider>
+          <Text style={styles.Text}>Satifação</Text>
+          <Picker 
+            style={styles.Picker}
+            selectedValue={Satisfacao}
+            onValueChange={(intemValue) => setSatisfacao(intemValue)}
+          >
+            <Picker.Item label='Ruim' value='Ruim'/>
+            <Picker.Item label='Médio' value='Médio'/>
+            <Picker.Item label='Bom' value='Bom'/>
+            <Picker.Item label='Muito Bom' value='Muito Bom'/>
+          </Picker>
 
           <TouchableOpacity
           onPress={ props.fechar}
@@ -70,9 +71,11 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       borderColor: '#000'
     },
-    Slider: {
-
-      alignItems: "flex-start",
+    Picker: {
+      alignItems: 'flex-start',
+      marginLeft: 14,
+      backgroundColor: '#fff',
       width: 200,
+      borderRadius: 2000,
     }
 });
