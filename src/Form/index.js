@@ -1,13 +1,18 @@
 import React, { useState }  from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Ionicons } from 'react-native-vector-icons';
+import { Alert, FlatListComponent, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Ionicons, AntDesign } from 'react-native-vector-icons';
 import { Picker } from '@react-native-picker/picker';
 
-export default function Form(props){
-    const[nomeAtividade, setnomeAtividade] = useState('')
-    const[descricaoAtividade, setdescriçãoAtvidade] = useState('')
-    const[Satisfacao, setSatisfacao] = useState('')
+export let ListTarefas = {}
 
+export default function Form(props){
+    const [nomeAtividade, setnomeAtividade] = useState('')
+    const [descricaoAtividade, setdescriçãoAtvidade] = useState('')
+    const [Satisfacao, setSatisfacao] = useState('')
+    
+
+    function adcionaTarefa(){
+    }
     return(
       <View style={styles.container}>
         <View style={styles.Modal}>
@@ -38,13 +43,22 @@ export default function Form(props){
               <Picker.Item label='Muito Bom' value='Muito Bom'/>
             </Picker>
           </View>
+          <Text style={styles.Text}> {ListTarefas}</Text>
 
-          <TouchableOpacity
-          onPress={ props.fechar}
-          style={{alignItems: 'center'}}
-          >
-            <Ionicons name='exit-outline' size={45} color='#fff' marginTop={25} />
-          </TouchableOpacity>
+          <View style={styles.Btn}>
+            <TouchableOpacity
+              style={{marginRight: 15}}
+              onPress={adcionaTarefa}
+            >
+              <AntDesign name='plus' size={45} color='#fff'/>
+            </TouchableOpacity>
+            <TouchableOpacity
+            onPress={props.fechar}
+            >
+              <Ionicons name='exit-outline' size={45} color='#fff'/>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </View>
     );
@@ -86,5 +100,12 @@ const styles = StyleSheet.create({
       color: '#000',
       width: 200,
       borderRadius: 2000,
+    },
+    Btn: {
+      marginTop: 45,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row'
     }
+
 });
