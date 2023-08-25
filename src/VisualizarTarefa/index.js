@@ -1,22 +1,28 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React  from 'react';
 import { Button, FlatList, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
-import {ListTarefas} from '../Form/index'
 
 export default function ViewTask(){
+    
+    const ListTarefas = async () => {
+      let Task = [];
+      try {
+        Task = await AsyncStorage.getItem("Task")|| []
+      } catch (error) {
+        console.log(error.message)
+      } return Task
+    }
+
     return(
       <View style={styles.container}>
         <StatusBar backgroundColor="#000"/>
         <Text style={styles.TextTitulo}>Tarefas</Text>
         <View>
-          {ListTarefas.map((todo) => {
-            return(
               <View style={styles.Visual}>
-                <Text style={styles.Text}>nome: {todo.nomeAtividade}</Text>
-                <Text style={styles.Text}>descrição: {todo.descricaoAtividade}</Text>
-                <Text style={styles.Text}>satifação: {todo.Satisfacao}</Text>
+                <Text style={styles.Text}>nome: {ListTarefas.toString}</Text>
+                <Text style={styles.Text}>descrição: {ListTarefas.length}</Text>
+                <Text style={styles.Text}>satifação: {ListTarefas}</Text>
               </View>
-            )
-          })}
         </View>
       </View>
     )

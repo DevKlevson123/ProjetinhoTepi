@@ -1,64 +1,90 @@
 import React, { useState }  from 'react';
-import { Alert, FlatListComponent, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, FlatListComponent, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons, AntDesign } from 'react-native-vector-icons';
-import { Picker } from '@react-native-picker/picker';
-
-export let ListTarefas = {}
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 export default function Form(props){
     const [nomeAtividade, setnomeAtividade] = useState('')
     const [descricaoAtividade, setdescriçãoAtvidade] = useState('')
     const [Satisfacao, setSatisfacao] = useState('')
-    
+    const [Data, setData] = useState(new Date(Date.now()))
+    const [show, setShow] = useState(false)
+    const Dados = {
+      nome: nomeAtividade,
+      descricao : descricaoAtividade,
+      data: Data
+    }
+
+    const onChange = (event, value) => { 
+      setData(value);
+      if(Platform.OS === 'android'){
+        setShow(false)
+      }
+      
+    };
+
+    const mostrarPicker = () => {
+      setShow(true)
+    }
 
     function adcionaTarefa(){
+      const salvar = async Dados => {
+        try {
+          await AsyncStorage.setItem("Task", JSON.stringify(Dados))
+        } catch (error) {
+          console.log(error.message)
+        }
+      } 
     }
-    return(
+    return (
       <View style={styles.container}>
         <View style={styles.Modal}>
           <Text style={styles.Text}>Nome Atividade</Text>
-          <TextInput 
-            placeholder='Nome Atividade' 
+          <TextInput
+            placeholder="Nome Atividade"
             onChangeText={(texto) => setnomeAtividade(texto)}
             style={styles.Input}
-            ></TextInput>
-
-          <Text style={styles.Text}>descrição da Atividade </Text>
-          <TextInput 
-          placeholder='descrição Atividade' 
-          style={styles.Input}
-          onChangeText={(texto) => setdescriçãoAtvidade(texto)}
           ></TextInput>
 
-          <Text style={styles.Text}>Satifação</Text>
-          <View style={styles.Picker}>
-            <Picker 
-              style={{width: 200, height: 50}}
-              selectedValue={Satisfacao}
-              onValueChange={(intemValue) => setSatisfacao(intemValue)}
+          <Text style={styles.Text}>descrição da Atividade </Text>
+          <TextInput
+            placeholder="descrição Atividade"
+            style={styles.Input}
+            onChangeText={(texto) => setdescriçãoAtvidade(texto)}
+          ></TextInput>
+          <View style={styles.Calendar}>
+            <Text style={styles.Calendar}>Data:</Text>
+            <TouchableOpacity
+              style={styles.Calendar}
+              onPress={mostrarPicker}
             >
-              <Picker.Item label='Ruim' value='Ruim'/>
-              <Picker.Item label='Médio' value='Médio'/>
-              <Picker.Item label='Bom' value='Bom'/>
-              <Picker.Item label='Muito Bom' value='Muito Bom'/>
-            </Picker>
+              <AntDesign name="calendar" size={25} color="#fff"/>
+            </TouchableOpacity>
           </View>
-          <Text style={styles.Text}> {ListTarefas}</Text>
+          {show && (
+            <DateTimePicker
+              testID="DateTimerPicker"
+              style={styles.Input}
+              value={Data}
+              mode={'date'}
+              display={Platform.OS === 'ios'? 'inline' : 'default' }
+              onChange={onChange}
+            />
+          )}
+          <Text style={styles.Text}></Text>
 
           <View style={styles.Btn}>
             <TouchableOpacity
-              style={{marginRight: 15}}
+              style={{ marginRight: 15 }}
               onPress={adcionaTarefa}
             >
-              <AntDesign name='plus' size={45} color='#fff'/>
+              <AntDesign name="plus" size={45} color="#fff" />
             </TouchableOpacity>
-            <TouchableOpacity
-            onPress={props.fechar}
-            >
-              <Ionicons name='exit-outline' size={45} color='#fff'/>
+            <TouchableOpacity onPress={props.fechar}>
+              <Ionicons name="exit-outline" size={45} color="#fff" />
             </TouchableOpacity>
           </View>
-
         </View>
       </View>
     );
@@ -82,7 +108,7 @@ const styles = StyleSheet.create({
     Modal: {
       backgroundColor: '#bbb',
       width:'95%',
-      height: 400,
+      height: 480,
       borderRadius: 10
     },
     Input: {
@@ -102,10 +128,17 @@ const styles = StyleSheet.create({
       borderRadius: 2000,
     },
     Btn: {
-      marginTop: 45,
+      marginTop: 15,
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'row'
+    },
+    Calendar: {
+      alignItems: 'flex-start',
+      flexDirection: 'row',
+      
+      color: '#fff',
+      marginLeft: 10,
+      marginTop: 10
     }
-
 });
